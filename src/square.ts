@@ -1,10 +1,3 @@
-export enum SquareState {
-  FLAG = "flag",
-  MINE = "mine",
-  MINE_HIT = "mine_hit",
-  UNEXPLORED = "unexplored"
-}
-
 import * as SquareImage from "./squareImages";
 
 const imageForNumber = (n: number): string => {
@@ -33,12 +26,9 @@ const imageForNumber = (n: number): string => {
 };
 
 export class Square {
-  public state: SquareState = SquareState.UNEXPLORED;
-  public image: HTMLImageElement = document.createElement(
-    "img"
-  ) as HTMLImageElement;
+  public image = document.createElement("img") as HTMLImageElement;
 
-  public isMine: boolean = false;
+  public isMine = false;
 
   constructor() {
     this.image.src = SquareImage.UNEXPLORED;

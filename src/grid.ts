@@ -1,7 +1,7 @@
 import { shuffle, createSquareGridTemplate } from "./utils";
 import { Square } from "./square";
 
-const MINE_DISTRIBUTION = 1 / 2;
+const MINE_DISTRIBUTION = 1 / 6;
 
 export class Grid {
   public container: HTMLElement = document.createElement("div");
