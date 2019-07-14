@@ -1,7 +1,7 @@
 import { shuffle, createSquareGridTemplate } from "./utils";
 import { Square } from "./square";
 
-const MINE_DISTRIBUTION = 1 / 6;
+const MINE_DISTRIBUTION = 1 / 10;
 
 export class Grid {
   public container: HTMLElement = document.createElement("div");
@@ -18,9 +18,14 @@ export class Grid {
 
     for (let y = 0; y < this.side; ++y) {
       for (let x = 0; x < this.side; ++x) {
-        const square = new Square();
+        const square = new Square(x, y);
         this.squares.push(square);
         this.container.appendChild(square.image);
+        square.image.addEventListener("contextmenu", e => e.preventDefault());
+        square.image.addEventListener("mousedown", event => {
+          if (event.buttons & 2) this.flagSquare(x, y);
+          else this.revealSquare(x, y);
+        });
       }
     }
 
@@ -29,20 +34,14 @@ export class Grid {
     for (let i = 0; i < this.squares.length * MINE_DISTRIBUTION; ++i) {
       nonMineSquares.pop()!.isMine = true;
     }
-
-    for (let y = 0; y < this.side; ++y) {
-      for (let x = 0; x < this.side; ++x) {
-        this.revealSquare(x, y);
-      }
-    }
   }
 
   getSquare(x: number, y: number): Square {
     return this.squares[y * this.side + x];
   }
 
-  neighbors(x: number, y: number): number {
-    let counter = 0;
+  neighbors(x: number, y: number): Square[] {
+    const result = [];
     for (let xc = -1; xc <= 1; ++xc) {
       for (let yc = -1; yc <= 1; ++yc) {
         if (xc == 0 && yc == 0) continue;
@@ -51,13 +50,25 @@ export class Grid {
 
         if (nx < 0 || ny < 0 || nx >= this.side || ny >= this.side) continue;
 
-        if (this.getSquare(nx, ny).isMine) counter += 1;
+        result.push(this.getSquare(nx, ny));
       }
     }
-    return counter;
+    return result;
   }
 
   revealSquare(x: number, y: number) {
-    this.getSquare(x, y).reveal(this.neighbors(x, y));
+    if (this.getSquare(x, y).isRevealed) return;
+    const neighbors = Array.from(this.neighbors(x, y));
+    const mineNeighbors = neighbors.filter(sq => sq.isMine).length;
+
+    this.getSquare(x, y).reveal(mineNeighbors);
+    if (mineNeighbors == 0)
+      requestAnimationFrame(() =>
+        neighbors.forEach(sq => this.revealSquare(sq.x, sq.y))
+      );
+  }
+
+  flagSquare(x: number, y: number) {
+    this.getSquare(x, y).flag();
   }
 }

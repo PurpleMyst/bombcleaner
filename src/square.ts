@@ -29,14 +29,23 @@ export class Square {
   public image = document.createElement("img") as HTMLImageElement;
 
   public isMine = false;
+  public isRevealed = false;
+  public isFlagged = false;
 
-  constructor() {
+  constructor(public x: number, public y: number) {
     this.image.src = SquareImage.UNEXPLORED;
   }
 
-  reveal(neighbors: number) {
+  reveal(mineNeighbors: number) {
+    if (this.isFlagged) return;
+    this.isRevealed = true;
     this.image.src = this.isMine
       ? SquareImage.MINEHIT
-      : imageForNumber(neighbors);
+      : imageForNumber(mineNeighbors);
+  }
+
+  flag() {
+    this.isFlagged = !this.isFlagged;
+    this.image.src = this.isFlagged ? SquareImage.FLAG : SquareImage.UNEXPLORED;
   }
 }
