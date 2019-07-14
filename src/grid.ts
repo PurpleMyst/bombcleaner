@@ -56,16 +56,21 @@ export class Grid {
     return result;
   }
 
-  revealSquare(x: number, y: number) {
-    if (this.getSquare(x, y).isRevealed) return;
+  revealSquare(x: number, y: number, isChain: boolean = false) {
+    const square = this.getSquare(x, y);
+
+    if (square.isRevealed) return;
     const neighbors = Array.from(this.neighbors(x, y));
     const mineNeighbors = neighbors.filter(sq => sq.isMine).length;
 
-    this.getSquare(x, y).reveal(mineNeighbors);
-    if (mineNeighbors == 0)
-      requestAnimationFrame(() =>
-        neighbors.forEach(sq => this.revealSquare(sq.x, sq.y))
-      );
+    square.reveal(mineNeighbors);
+    if (!square.isMine && (isChain || mineNeighbors == 0)) {
+      requestAnimationFrame(() => {
+        neighbors.forEach(sq => {
+          if (!sq.isMine) this.revealSquare(sq.x, sq.y, true);
+        });
+      });
+    }
   }
 
   flagSquare(x: number, y: number) {
