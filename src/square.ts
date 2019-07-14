@@ -32,7 +32,7 @@ export class Square {
     this.image.src = SquareImage.UNEXPLORED;
   }
 
-  reveal() {
-    this.image.src = this.isMine ? SquareImage.MINEHIT : imageForNumber(Math.floor(Math.random() * 8));
+  reveal(neighbors: number) {
+    this.image.src = this.isMine ? SquareImage.MINEHIT : imageForNumber(neighbors);
   }
 }
