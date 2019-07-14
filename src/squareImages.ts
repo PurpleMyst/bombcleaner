@@ -8,6 +8,10 @@ export { default as SIX } from "./assets/Minesweeper_LAZARUS_21x21_6.png";
 export { default as SEVEN } from "./assets/Minesweeper_LAZARUS_21x21_7.png";
 export { default as EIGHT } from "./assets/Minesweeper_LAZARUS_21x21_8.png";
 export { default as FLAG } from "./assets/Minesweeper_LAZARUS_21x21_flag.png";
-export { default as MINEHIT } from "./assets/Minesweeper_LAZARUS_21x21_mine_hit.png";
+export {
+  default as MINEHIT
+} from "./assets/Minesweeper_LAZARUS_21x21_mine_hit.png";
 export { default as MINE } from "./assets/Minesweeper_LAZARUS_21x21_mine.png";
-export { default as UNEXPLORED } from "./assets/Minesweeper_LAZARUS_21x21_unexplored.png";
+export {
+  default as UNEXPLORED
+} from "./assets/Minesweeper_LAZARUS_21x21_unexplored.png";

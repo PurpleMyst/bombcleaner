@@ -1,7 +1,7 @@
 import { shuffle, createSquareGridTemplate } from "./utils";
 import { Square } from "./square";
 
-const MINE_DISTRIBUTION = 1/2;
+const MINE_DISTRIBUTION = 1 / 2;
 
 export class Grid {
   public container: HTMLElement = document.createElement("div");
@@ -49,7 +49,7 @@ export class Grid {
         const nx = x + xc;
         const ny = y + yc;
 
-        if(nx < 0 || ny < 0 || nx >= this.side || ny >= this.side) continue;
+        if (nx < 0 || ny < 0 || nx >= this.side || ny >= this.side) continue;
 
         if (this.getSquare(nx, ny).isMine) counter += 1;
       }
